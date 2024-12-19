@@ -1,0 +1,30 @@
+name: Node.js TEST pipeline
+
+on:
+  push:
+    branches:
+      - test
+
+jobs:
+  linting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v3
+        with: 
+          node-version: '18.x'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Do the Lint
+        run: npm run lint
+
+      - name: Run XZ Utils check (I'm scared)
+        run: npm audit --audit-level=moderate
+
+      - name: Lets do security! Wahooo
+        uses: returntocorp/semgrep-action@v1
